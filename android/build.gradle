@@ -1,0 +1,45 @@
+// android/build.gradle
+
+// This block defines the build script dependencies
+buildscript {
+    ext.kotlin_version = '1.6.10' // Use the latest compatible version
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.4' // Use the latest compatible version
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+// This block applies the plugins
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+
+
+// This block is used to configure repositories for all projects
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Additional project configurations
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+// Define clean task
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
